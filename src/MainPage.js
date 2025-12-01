@@ -49,13 +49,13 @@ function MainPage() {
 
       {/* 메인 컨텐츠 */}
       <main className="main-hero-section">
-        {/* 글로벌 / Viral 헤더 영역 */}
+        {/* K-pop Chart 헤더 영역 */}
         <section className="main-hero">
           <div className="main-hero-left">
             <div className="main-hero-title-wrap">
               <button className="main-play-circle">▶</button>
               <div>
-                <h1 className="main-hero-title">Music Of The Month</h1>
+                <h1 className="main-hero-title">K-pop Chart</h1>
                 <p className="main-hero-desc">
                   이번 달의 가장 핫한 트랙들을 소개해드려요!
                 </p>
@@ -74,9 +74,9 @@ function MainPage() {
           </div>
         </section>
 
-        {/* 차트 + 뮤직비디오 2단 레이아웃 */}
+        {/* K-pop Chart + Rap Chart 2단 레이아웃 */}
         <section className="main-body">
-          {/* 달의 음악 */}
+          {/* K-pop Chart */}
           <div className="main-chart">
             <h2 className="main-section-title">K-pop Chart</h2>
 
@@ -112,7 +112,7 @@ function MainPage() {
               ))}
             </ul>
           </div>
-          {/* 달의 음악 */}
+          {/* 무작위 랩 음악 */}
           <div className="main-chart">
             <h2 className="main-section-title">Rap Chart</h2>
 
