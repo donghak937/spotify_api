@@ -5,10 +5,12 @@
     background-color: black;
 }
 
-.login>img {
-    width: 100%;
-    object-fit: contain;
-    height: 200px;
+.login-logo {
+    font-size: 80px;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 40px;
+    letter-spacing: -2px;
 }
 
 .login-btn {

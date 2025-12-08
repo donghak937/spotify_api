@@ -28,10 +28,7 @@ function LoginPage() {
 
     return (
         <div className="login">
-            <img
-                src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_White.png"
-                alt="Spotify Logo"
-            />
+            <h1 className="login-logo">OSS MUSIC</h1>
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <button onClick={signIn} className="login-btn">SIGN IN WITH GOOGLE</button>
         </div>
