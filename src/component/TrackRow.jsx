@@ -1,9 +1,9 @@
 import React from 'react';
 import '../MainPage.css';
 
-const TrackRow = ({ track, rank, showAlbumInfo = false, onAdd, onRemove }) => {
+const TrackRow = ({ track, rank, showAlbumInfo = false, onAdd, onRemove, onClick }) => {
     return (
-        <li className="main-track-row">
+        <li className="main-track-row" onClick={onClick} style={{ cursor: 'pointer' }}>
             <div className="main-track-rank">
                 {rank}
             </div>
@@ -30,7 +30,7 @@ const TrackRow = ({ track, rank, showAlbumInfo = false, onAdd, onRemove }) => {
 
             <div className="main-track-actions">
                 {onAdd && (
-                    <button className="add-btn" onClick={onAdd} style={{
+                    <button className="add-btn" onClick={(e) => { e.stopPropagation(); onAdd(); }} style={{
                         background: 'transparent',
                         border: '1px solid white',
                         color: 'white',
@@ -42,7 +42,7 @@ const TrackRow = ({ track, rank, showAlbumInfo = false, onAdd, onRemove }) => {
                     }}>+</button>
                 )}
                 {onRemove && (
-                    <button className="remove-btn" onClick={onRemove} style={{
+                    <button className="remove-btn" onClick={(e) => { e.stopPropagation(); onRemove(); }} style={{
                         background: 'transparent',
                         border: '1px solid #e91e63',
                         color: '#e91e63',

@@ -6,6 +6,7 @@ import ChartPage from './ChartPage';
 import SongList from './SongList';
 import LoginPage from './LoginPage';
 import MyPlaylistPage from './MyPlaylistPage';
+import SongModal from './component/SongModal';
 import { auth, db } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, setDoc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
@@ -13,30 +14,36 @@ import { doc, setDoc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebas
 function MainPage() {
   const [user, setUser] = useState(null);
   const [myPlaylist, setMyPlaylist] = useState([]);
+  const [memos, setMemos] = useState({}); // Memo state: { trackId: "text" }
+  const [selectedTrack, setSelectedTrack] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
         setUser(authUser);
-        // Load playlist from Firestore
+        // Load playlist & memos from Firestore
         const userDocRef = doc(db, "users", authUser.uid);
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
-          setMyPlaylist(userDoc.data().playlist || []);
+          const data = userDoc.data();
+          setMyPlaylist(data.playlist || []);
+          setMemos(data.memos || {});
         } else {
           // Create user doc if not exists
           try {
-            await setDoc(userDocRef, { playlist: [] });
+            await setDoc(userDocRef, { playlist: [], memos: {} });
             setMyPlaylist([]);
+            setMemos({});
           } catch (e) {
             console.error("Error creating user doc:", e);
-            // Fallback for when DB is not ready or permissions fail
             setMyPlaylist([]);
+            setMemos({});
           }
         }
       } else {
         setUser(null);
         setMyPlaylist([]);
+        setMemos({});
       }
     });
 
@@ -88,6 +95,37 @@ function MainPage() {
     }
   };
 
+  const handleTrackClick = (track) => {
+    setSelectedTrack(track);
+  };
+
+  const closeModal = () => {
+    setSelectedTrack(null);
+  };
+
+  const handleSaveMemo = async (trackId, text) => {
+    if (!user) return;
+
+    // Update local state
+    const newMemos = { ...memos, [trackId]: text };
+    setMemos(newMemos);
+
+    // Save to Firestore
+    const userDocRef = doc(db, "users", user.uid);
+    try {
+      // Use dot notation to update specific map field or replace entire map?
+      // Easiest is to update the entire 'memos' field to avoid complex dot notation for dynamic keys in updateDoc if not using Map.
+      // Actually Firestore updateDoc allows "memos.trackId": text
+      await updateDoc(userDocRef, {
+        [`memos.${trackId}`]: text
+      });
+      alert("메모가 저장되었습니다!");
+    } catch (e) {
+      console.error("Error saving memo:", e);
+      alert("메모 저장 실패");
+    }
+  };
+
   return (
     <div className="main-page">
       {/* 최상단 네비바 */}
@@ -96,12 +134,23 @@ function MainPage() {
       {/* 메인 컨텐츠 */}
       <main className="main-main">
         <Routes>
-          <Route path="/" element={<ChartPage />} />
-          <Route path="/songs" element={<SongList onAdd={addToPlaylist} />} />
-          <Route path="/playlist" element={<MyPlaylistPage playlist={myPlaylist} onRemove={removeFromPlaylist} user={user} />} />
+          <Route path="/" element={<ChartPage onTrackClick={handleTrackClick} />} />
+          <Route path="/songs" element={<SongList onAdd={addToPlaylist} onTrackClick={handleTrackClick} />} />
+          <Route path="/playlist" element={<MyPlaylistPage playlist={myPlaylist} onRemove={removeFromPlaylist} user={user} onTrackClick={handleTrackClick} />} />
           <Route path="/login" element={<LoginPage />} />
         </Routes>
       </main>
+
+      {/* Song Modal */}
+      {selectedTrack && (
+        <SongModal
+          track={selectedTrack}
+          onClose={closeModal}
+          user={user}
+          memo={memos[selectedTrack.id] || ""}
+          onSaveMemo={handleSaveMemo}
+        />
+      )}
     </div>
   );
 }

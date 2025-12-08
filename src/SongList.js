@@ -4,7 +4,7 @@ import { getRandomKpopTracks, getRandomRapSongTracks } from './spotify';
 import SearchBar from './component/SearchBar';
 import TrackRow from './component/TrackRow';
 
-function SongList({ onAdd }) {
+function SongList({ onAdd, onTrackClick }) {
     const [tracks, setTracks] = useState([]);
     const [rapTracks, setRapTracks] = useState([]);
     const [searchTerm, setSearchTerm] = useState(""); // 검색어
@@ -99,6 +99,7 @@ function SongList({ onAdd }) {
                         rank={i + 1}
                         showAlbumInfo={true}
                         onAdd={() => onAdd(track)}
+                        onClick={() => onTrackClick(track)}
                     />
                 ))}
             </ul>
@@ -108,5 +109,6 @@ function SongList({ onAdd }) {
         </section>
     );
 }
+
 
 export default SongList;

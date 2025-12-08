@@ -1,7 +1,7 @@
 import React from 'react';
 import TrackRow from './component/TrackRow';
 
-function MyPlaylistPage({ playlist, onRemove, user }) {
+function MyPlaylistPage({ playlist, onRemove, user, onTrackClick }) {
     if (!user) {
         return (
             <div className="song-list">
@@ -27,6 +27,7 @@ function MyPlaylistPage({ playlist, onRemove, user }) {
                             track={track}
                             index={index}
                             onRemove={() => onRemove(track.id)} // Pass removal handler
+                            onClick={() => onTrackClick(track)}
                         />
                     ))
                 )}
