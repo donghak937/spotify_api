@@ -73,9 +73,8 @@ const searchByArtists = async (artists) => {
 
         if (allTracks.length === 0) return [];
 
-        // 랜덤 셔플 후 10개 선택
-        const shuffled = allTracks.sort(() => 0.5 - Math.random());
-        const selected = shuffled.slice(0, 10);
+        // 랜덤 셔플
+        const selected = allTracks.sort(() => 0.5 - Math.random());
 
         // 트랙 정보, 나중에 전부 사용 가능!
         return selected.map((track, index) => ({
@@ -83,7 +82,11 @@ const searchByArtists = async (artists) => {
             rank: index + 1,
             title: track.name,
             artist: track.artists[0].name,
-            cover: track.album.images[0]?.url || ''
+            cover: track.album.images[0]?.url || '',
+            album: track.album.name,
+            popularity: track.popularity,
+            releaseDate: track.album.release_date,
+            duration: track.duration_ms
         }));
 
     } catch (error) {
