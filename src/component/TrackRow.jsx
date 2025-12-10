@@ -1,9 +1,9 @@
 import React from 'react';
 import '../MainPage.css';
 
-const TrackRow = ({ track, rank, showAlbumInfo = false }) => {
+const TrackRow = ({ track, rank, showAlbumInfo = false, onAdd, onRemove, onClick }) => {
     return (
-        <li className="main-track-row">
+        <li className="main-track-row" onClick={onClick} style={{ cursor: 'pointer' }}>
             <div className="main-track-rank">
                 {rank}
             </div>
@@ -25,6 +25,33 @@ const TrackRow = ({ track, rank, showAlbumInfo = false }) => {
                         {track.album && <span className="track-album">💿 {track.album} </span>}
                         {track.releaseDate && <span className="track-date">📅 {track.releaseDate}</span>}
                     </div>
+                )}
+            </div>
+
+            <div className="main-track-actions">
+                {onAdd && (
+                    <button className="add-btn" onClick={(e) => { e.stopPropagation(); onAdd(); }} style={{
+                        background: 'transparent',
+                        border: '1px solid white',
+                        color: 'white',
+                        borderRadius: '50%',
+                        width: '30px',
+                        height: '30px',
+                        cursor: 'pointer',
+                        marginLeft: '10px'
+                    }}>+</button>
+                )}
+                {onRemove && (
+                    <button className="remove-btn" onClick={(e) => { e.stopPropagation(); onRemove(); }} style={{
+                        background: 'transparent',
+                        border: '1px solid #e91e63',
+                        color: '#e91e63',
+                        borderRadius: '50%',
+                        width: '30px',
+                        height: '30px',
+                        cursor: 'pointer',
+                        marginLeft: '10px'
+                    }}>-</button>
                 )}
             </div>
         </li>

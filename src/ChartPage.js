@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Hero from './component/Hero';
 import TrackRow from './component/TrackRow';
 
-function ChartPage() {
+function ChartPage({ onTrackClick }) {
     const [tracks, setTracks] = useState([]);
     const [rapTracks, setRapTracks] = useState([]);
     const navigate = useNavigate();
@@ -55,7 +55,7 @@ function ChartPage() {
 
                     <ul className="main-chart-list">
                         {tracks.map((track) => (
-                            <TrackRow key={track.id} track={track} rank={track.rank} />
+                            <TrackRow key={track.id} track={track} rank={track.rank} onClick={() => onTrackClick(track)} />
                         ))}
                     </ul>
                 </div>
@@ -76,7 +76,7 @@ function ChartPage() {
 
                     <ul className="main-chart-list">
                         {rapTracks.map((track) => (
-                            <TrackRow key={track.id} track={track} rank={track.rank} />
+                            <TrackRow key={track.id} track={track} rank={track.rank} onClick={() => onTrackClick(track)} />
                         ))}
                     </ul>
                 </div>

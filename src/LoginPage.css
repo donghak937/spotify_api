@@ -1,0 +1,27 @@
+.login {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    background-color: black;
+}
+
+.login-logo {
+    font-size: 80px;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 40px;
+    letter-spacing: -2px;
+}
+
+.login-btn {
+    padding: 20px;
+    background-color: #1db954;
+    border-radius: 99px;
+    font-weight: 800;
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}

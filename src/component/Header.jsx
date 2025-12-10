@@ -1,13 +1,24 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '../MainPage.css';
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
 
-const Header = () => {
+const Header = ({ user }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
     const handleChartClick = () => navigate('/');
     const handleSongListClick = () => navigate('/songs');
+    const handlePlaylistClick = () => navigate('/playlist');
+
+    const handleLogout = () => {
+        signOut(auth).then(() => {
+            alert("Signed out successfully");
+        }).catch((error) => {
+            alert("Error signing out: " + error.message);
+        });
+    };
 
     return (
         <header className="main-header">
@@ -18,12 +29,16 @@ const Header = () => {
                     <button className="main-nav-item" onClick={handleChartClick}>앱 제작자</button>
                     <button className={`main-nav-item ${location.pathname === '/songs' ? 'active' : ''}`} onClick={handleSongListClick}>노래 목록</button>
                     <button className={`main-nav-item ${location.pathname === '/' ? 'active' : ''}`} onClick={handleChartClick}>차트</button>
-                    <button className="main-nav-item">내 플레이 리스트</button>
+                    <button className={`main-nav-item ${location.pathname === '/playlist' ? 'active' : ''}`} onClick={handlePlaylistClick}>내 플레이 리스트</button>
                 </nav>
             </div>
 
             <div className="main-header-right">
-                <button className="main-apple-btn">로그인</button>
+                {user ? (
+                    <button className="main-apple-btn" onClick={handleLogout} style={{ backgroundColor: '#e91e63', borderColor: '#e91e63' }}>로그아웃</button>
+                ) : (
+                    <button className="main-apple-btn" onClick={() => navigate('/login')}>로그인</button>
+                )}
             </div>
         </header>
     );
