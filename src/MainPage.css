@@ -424,3 +424,75 @@ button {
         width: 100%;
     }
 }
+
+/* --- Song List Section --- */
+.song-list-section {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.song-list-controls {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    align-items: center;
+}
+
+.search-bar {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 20px;
+    border: 1px solid #333;
+    background-color: #1e1e1e;
+    color: #fff;
+    font-size: 16px;
+}
+
+.search-bar:focus {
+    outline: none;
+    border-color: #1DB954;
+}
+
+.sort-select {
+    padding: 12px 16px;
+    border-radius: 20px;
+    border: 1px solid #333;
+    background-color: #1e1e1e;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.sort-select:focus {
+    outline: none;
+    border-color: #1DB954;
+}
+
+.song-list-combined .main-track-row {
+    /* 기존 row 스타일 상속하되 추가 스타일 필요시 작성 */
+}
+
+/* 앨범명, 날짜 등 추가 정보 */
+.main-track-album-info {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #b3b3b3;
+}
+
+.track-album {
+    margin-right: 12px;
+}
+
+.no-result {
+    text-align: center;
+    padding: 40px;
+    color: #b3b3b3;
+    font-size: 18px;
+}
+
+/* Nav Active State */
+.main-nav-item.active {
+    color: #fff;
+    font-weight: bold;
+}
