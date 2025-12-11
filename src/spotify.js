@@ -95,6 +95,70 @@ const searchByArtists = async (artists) => {
     }
 }
 
+// 차트 페이지에서 랜덤 차트 띄우는 부분
+
+const CHART_THEMES = [
+    { title: "🔥 지금 뜨는 K-Pop", query: "genre:k-pop year:2024" },
+    { title: "😎 힙한 K-HipHop", query: "genre:korean hip hop" },
+    { title: "😭 새벽 감성 발라드", query: "genre:korean ballad" },
+    { title: "🍷 트렌디한 R&B", query: "genre:korean r&b" },
+    { title: "💃 신나는 댄스 파티", query: "genre:k-pop dance" },
+    { title: "🎸 방구석 인디 음악", query: "genre:korean indie" },
+    { title: "🎬 드라마 OST 명곡", query: "ost year:2023-2024" },
+    { title: "🌍 글로벌 팝 트렌드", query: "year:2024" },
+    { title: "☕ 카페에서 듣기 좋은", query: "acoustic" },
+    { title: "💪 헬스장 부스터", query: "workout" }
+];
+
+// 배열을 랜덤으로 섞는 유틸리티 함수
+const shuffleArray = (array) => {
+    return array.sort(() => 0.5 - Math.random());
+};
+
+// 메인 기능: 랜덤으로 6개 테마를 선정해 Top 10 가져오기
+export const getMultiCharts = async () => {
+    try {
+        const token = await getToken();
+        
+        // 1. 전체 테마 중 랜덤으로 6개 선택
+        const selectedThemes = shuffleArray([...CHART_THEMES]).slice(0, 6);
+        
+        // 2. 6개 테마에 대해 병렬로 API 요청 (속도 향상)
+        const promises = selectedThemes.map(async (theme) => {
+            const res = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(theme.query)}&type=track&limit=10`, {
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const data = await res.json();
+            
+            // 데이터 가공
+            const tracks = data.tracks.items.map((track, index) => ({
+                id: track.id,
+                rank: index + 1,
+                title: track.name,
+                artist: track.artists[0].name,
+                cover: track.album.images[0]?.url || '',
+                album: track.album.name,
+                popularity: track.popularity,
+                releaseDate: track.album.release_date
+            }));
+
+            return {
+                title: theme.title,
+                tracks: tracks
+            };
+        });
+
+        // 모든 요청이 끝날 때까지 대기
+        const charts = await Promise.all(promises);
+        return charts;
+
+    } catch (error) {
+        console.error("Error fetching charts:", error);
+        return [];
+    }
+};
+
 // K-Pop 트랙 가져오기
 export const getRandomKpopTracks = async () => {
     return await searchByArtists(KPOP_ARTISTS);
