@@ -1,88 +1,66 @@
-import React, { useEffect, useState } from "react";
-import './MainPage.css';
-import { getRandomKpopTracks, getRandomRapSongTracks } from './spotify';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { getMultiCharts } from './spotify';
 import Hero from './component/Hero';
 import TrackRow from './component/TrackRow';
+import './MainPage.css';
 
 function ChartPage({ onTrackClick }) {
-    const [tracks, setTracks] = useState([]);
-    const [rapTracks, setRapTracks] = useState([]);
-    const navigate = useNavigate();
+    const [charts, setCharts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
-            const kpopTracks = await getRandomKpopTracks();
-            if (kpopTracks && kpopTracks.length > 0) {
-                setTracks(kpopTracks);
-            }
+            setLoading(true);
+            const data = await getMultiCharts();
+            setCharts(data);
+            setLoading(false);
         };
         fetchData();
     }, []);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const rapTracks = await getRandomRapSongTracks();
-            if (rapTracks && rapTracks.length > 0) {
-                setRapTracks(rapTracks);
-            }
-        };
-        fetchData();
-    }, []);
-
-    const handleSearchClick = () => {
-        navigate('/songs');
-    };
+    if (loading) {
+        return (
+            <div className="main-page-loading" style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                Loading Charts...
+            </div>
+        );
+    }
 
     return (
-        <>
-            <Hero onSearchClick={handleSearchClick} />
+        <div className="chart-page">
+            {/* 첫 번째 차트의 타이틀을 Hero에 전달 (옵션) */}
+            {charts.length > 0 && (
+                <Hero 
+                    onSearchClick={() => {}} 
+                    title={charts[0]?.title} 
+                />
+            )}
 
-            <section className="main-body">
-                {/* K-pop Chart */}
-                <div className="main-chart">
-                    <h2 className="main-section-title">K-pop Chart</h2>
+            {/* ▼ 2행 3열 그리드 컨테이너 ▼ */}
+            <div className="charts-grid">
+                {charts.map((chart, chartIndex) => (
+                    <section key={chartIndex} className="chart-card">
+                        {/* 섹션 제목 */}
+                        <h2 className="chart-title">
+                            {chart.title}
+                        </h2>
 
-                    <div className="main-video-card">
-                        <div className="main-video-thumb">K-pop</div>
-                        <div className="main-video-info">
-                            <div className="main-video-title">무작위 K-pop 트랙</div>
-                            <p className="main-video-desc">
-                                무작위 K-pop 트랙을 소개해드려요!
-                            </p>
-                        </div>
-                    </div>
-
-                    <ul className="main-chart-list">
-                        {tracks.map((track) => (
-                            <TrackRow key={track.id} track={track} rank={track.rank} onClick={() => onTrackClick(track)} />
-                        ))}
-                    </ul>
-                </div>
-
-                {/* Rap Chart */}
-                <div className="main-chart">
-                    <h2 className="main-section-title">Rap Chart</h2>
-
-                    <div className="main-video-card">
-                        <div className="main-video-thumb">Rap</div>
-                        <div className="main-video-info">
-                            <div className="main-video-title">무작위 Rap 트랙</div>
-                            <p className="main-video-desc">
-                                무작위 Rap 트랙을 소개해드려요!
-                            </p>
-                        </div>
-                    </div>
-
-                    <ul className="main-chart-list">
-                        {rapTracks.map((track) => (
-                            <TrackRow key={track.id} track={track} rank={track.rank} onClick={() => onTrackClick(track)} />
-                        ))}
-                    </ul>
-                </div>
-
-            </section>
-        </>
+                        {/* 트랙 리스트 (스크롤 가능하게 처리할 수도 있음) */}
+                        <ul className="mini-track-list">
+                            {chart.tracks.map((track, i) => (
+                                <TrackRow
+                                    key={track.id}
+                                    track={track}
+                                    rank={i + 1}
+                                    showAlbumInfo={false} // 공간이 좁으니 앨범 정보는 숨김
+                                    onClick={() => onTrackClick(track)}
+                                />
+                            ))}
+                        </ul>
+                    </section>
+                ))}
+            </div>
+        </div>
     );
 }
 

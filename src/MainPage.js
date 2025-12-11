@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import './MainPage.css';
 import { Routes, Route } from 'react-router-dom';
 import Header from './component/Header';
+import HomePage from './HomePage'; // 새로 만든 메인 홈페이지
 import ChartPage from './ChartPage';
 import SongList from './SongList';
 import LoginPage from './LoginPage';
@@ -134,7 +135,8 @@ function MainPage() {
       {/* 메인 컨텐츠 */}
       <main className="main-main">
         <Routes>
-          <Route path="/" element={<ChartPage onTrackClick={handleTrackClick} />} />
+          <Route path="/" element={<HomePage onTrackClick={handleTrackClick} />} />
+          <Route path="/charts" element={<ChartPage onTrackClick={handleTrackClick} />} />
           <Route path="/songs" element={<SongList onAdd={addToPlaylist} onTrackClick={handleTrackClick} />} />
           <Route path="/playlist" element={<MyPlaylistPage playlist={myPlaylist} onRemove={removeFromPlaylist} user={user} onTrackClick={handleTrackClick} />} />
           <Route path="/login" element={<LoginPage />} />

@@ -781,3 +781,74 @@ button {
         grid-template-columns: 1fr;
     }
 }
+
+/* ===== ChartPage 2행 3열 그리드 스타일 ===== */
+
+.charts-grid {
+    display: grid;
+    /* 3개의 컬럼을 균등하게 배치 (1fr 1fr 1fr) */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px; /* 카드 사이 간격 */
+    padding: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* 개별 차트 카드 디자인 */
+.chart-card {
+    background: rgba(255, 255, 255, 0.03); /* 살짝 밝은 배경 */
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chart-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #fff;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #1db954; /* 제목 밑줄 포인트 */
+    display: inline-block;
+}
+
+/* 작은 리스트 스타일 재정의 */
+.mini-track-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* 그리드 안에서는 TrackRow 여백 등을 조금 줄임 */
+.mini-track-list .main-track-row {
+    padding: 8px 0;
+    font-size: 14px;
+}
+
+.mini-track-list .main-track-cover {
+    width: 40px; /* 커버 이미지 사이즈 축소 */
+    height: 40px;
+}
+
+.mini-track-list .main-track-play {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+}
+
+/* ===== 반응형 처리 (화면 크기에 따라 열 개수 조절) ===== */
+
+/* 태블릿 등 중간 화면: 2열로 변경 (3행 2열) */
+@media (max-width: 1200px) {
+    .charts-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 모바일 화면: 1열로 변경 (수직 나열) */
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+}
