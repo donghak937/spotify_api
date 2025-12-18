@@ -7,6 +7,7 @@ import ChartPage from './ChartPage';
 import SongList from './SongList';
 import LoginPage from './LoginPage';
 import MyPlaylistPage from './MyPlaylistPage';
+import DeveloperPage from './DeveloperPage';
 import SongModal from './component/SongModal';
 import { auth, db } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -137,9 +138,11 @@ function MainPage() {
         <Routes>
           <Route path="/" element={<HomePage onTrackClick={handleTrackClick} />} />
           <Route path="/charts" element={<ChartPage onTrackClick={handleTrackClick} />} />
+          <Route path="/developers" element={<DeveloperPage />} />
           <Route path="/songs" element={<SongList onAdd={addToPlaylist} onTrackClick={handleTrackClick} />} />
           <Route path="/playlist" element={<MyPlaylistPage playlist={myPlaylist} onRemove={removeFromPlaylist} user={user} onTrackClick={handleTrackClick} />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/developers" element={<DeveloperPage />} />
         </Routes>
       </main>
 
@@ -151,6 +154,17 @@ function MainPage() {
           user={user}
           memo={memos[selectedTrack.id] || ""}
           onSaveMemo={handleSaveMemo}
+
+          isSaved={myPlaylist.some(t => t.id === selectedTrack.id)}
+          
+          onTogglePlaylist={() => {
+            const exists = myPlaylist.some(t => t.id === selectedTrack.id);
+            if (exists) {
+                removeFromPlaylist(selectedTrack.id); // 이미 있으면 삭제
+            } else {
+                addToPlaylist(selectedTrack); // 없으면 추가
+            }
+          }}
         />
       )}
     </div>
