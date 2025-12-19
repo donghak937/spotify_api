@@ -260,22 +260,72 @@ button {
 }
 
 .main-track-row {
-    display: grid;
-    grid-template-columns: 32px 64px minmax(0, 1fr) 24px;
+    display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 10px 0;
+    gap: 20px;
+    padding: 12px 24px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    transition: background 0.2s;
+}
+
+.main-track-row:hover {
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .main-track-row:last-child {
     border-bottom: none;
 }
 
+.main-track-checkbox {
+    display: flex;
+    align-items: center;
+    margin-right: -4px;
+}
+
+.main-track-checkbox input {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: #1DB954;
+}
+
 .main-track-rank {
-    font-size: 18px;
+    width: 30px;
+    font-size: 16px;
     font-weight: 600;
-    color: #c7c7d5;
+    color: #a6a6b5;
+    text-align: center;
+}
+
+.main-track-cover-wrap {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+}
+
+.main-track-meta {
+    min-width: 200px;
+    flex: 0 1 auto;
+}
+
+.main-track-memo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+    margin-left: 20px;
+    padding-left: 20px;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 400px;
+    flex: 1;
+}
+
+.main-track-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 /* 앨범 커버 + 재생 버튼 */
@@ -467,10 +517,6 @@ button {
 .sort-select:focus {
     outline: none;
     border-color: #1DB954;
-}
-
-.song-list-combined .main-track-row {
-    /* 기존 row 스타일 상속하되 추가 스타일 필요시 작성 */
 }
 
 /* 앨범명, 날짜 등 추가 정보 */
@@ -788,7 +834,8 @@ button {
     display: grid;
     /* 3개의 컬럼을 균등하게 배치 (1fr 1fr 1fr) */
     grid-template-columns: repeat(3, 1fr);
-    gap: 30px; /* 카드 사이 간격 */
+    gap: 30px;
+    /* 카드 사이 간격 */
     padding: 40px;
     max-width: 1400px;
     margin: 0 auto;
@@ -796,7 +843,8 @@ button {
 
 /* 개별 차트 카드 디자인 */
 .chart-card {
-    background: rgba(255, 255, 255, 0.03); /* 살짝 밝은 배경 */
+    background: rgba(255, 255, 255, 0.03);
+    /* 살짝 밝은 배경 */
     border-radius: 16px;
     padding: 20px;
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -808,7 +856,8 @@ button {
     margin-bottom: 20px;
     color: #fff;
     padding-bottom: 10px;
-    border-bottom: 2px solid #1db954; /* 제목 밑줄 포인트 */
+    border-bottom: 2px solid #1db954;
+    /* 제목 밑줄 포인트 */
     display: inline-block;
 }
 
@@ -826,7 +875,8 @@ button {
 }
 
 .mini-track-list .main-track-cover {
-    width: 40px; /* 커버 이미지 사이즈 축소 */
+    width: 40px;
+    /* 커버 이미지 사이즈 축소 */
     height: 40px;
 }
 
@@ -855,10 +905,12 @@ button {
 
 /* ===== 배너 (Banner) 스타일 ===== */
 .main-banner {
-    background: linear-gradient(90deg, #8E2DE2, #4A00E0); /* 보라색 계열 그라데이션 */
+    background: linear-gradient(90deg, #8E2DE2, #4A00E0);
+    /* 보라색 계열 그라데이션 */
     border-radius: 12px;
     padding: 40px;
-    margin-bottom: 40px; /* 아래 리스트와 간격 */
+    margin-bottom: 40px;
+    /* 아래 리스트와 간격 */
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
@@ -911,9 +963,11 @@ button {
 /* 메인 페이지 좌우 레이아웃 잡기 */
 .home-layout {
     display: flex;
-    gap: 50px; /* 좌우 간격 */
+    gap: 50px;
+    /* 좌우 간격 */
     margin-top: 40px;
-    align-items: flex-start; /* 위쪽 정렬 */
+    align-items: flex-start;
+    /* 위쪽 정렬 */
 }
 
 /* 왼쪽: 차트 리스트 (60% 차지) */
@@ -930,15 +984,18 @@ button {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 40px; /* 위아래 간격 */
-    position: sticky; /* 스크롤 내려도 따라오게 */
+    gap: 40px;
+    /* 위아래 간격 */
+    position: sticky;
+    /* 스크롤 내려도 따라오게 */
     top: 100px;
 }
 
 /* 아티스트 그리드 (2열) */
 .artist-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 한 줄에 3명 */
+    grid-template-columns: repeat(3, 1fr);
+    /* 한 줄에 3명 */
     gap: 20px;
 }
 
@@ -952,17 +1009,20 @@ button {
 }
 
 .artist-item:hover {
-    transform: translateY(-5px); /* 살짝 떠오르는 효과 */
+    transform: translateY(-5px);
+    /* 살짝 떠오르는 효과 */
 }
 
 .artist-img {
     width: 80px;
     height: 80px;
-    border-radius: 50%; /* 동그랗게 */
+    border-radius: 50%;
+    /* 동그랗게 */
     object-fit: cover;
     margin-bottom: 10px;
-    border: 2px solid #1db954; /* 스포티파이 색 테두리 */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    border: 2px solid #1db954;
+    /* 스포티파이 색 테두리 */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 .artist-name {
@@ -990,6 +1050,54 @@ button {
 }
 
 .keyword-tag:hover {
-    background: #1db954; /* 호버 시 초록색 */
+    background: #1db954;
+    /* 호버 시 초록색 */
     color: white;
+}
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 40px 0;
+}
+
+.pagination-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: #b3b3b3;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.pagination-btn.active {
+    background: #1DB954;
+    color: white;
+    border-color: #1DB954;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.pagination-arrow {
+    padding: 0 15px;
+    border-radius: 20px;
+    width: auto;
 }
