@@ -26,13 +26,19 @@ function ChartPage({ onTrackClick }) {
         );
     }
 
+    const firstChart = charts.length > 0 ? charts[0] : null;
+    const cover1 = firstChart?.tracks[0]?.cover; // 1위 곡 커버
+    const cover2 = firstChart?.tracks[1]?.cover; // 2위 곡 커버
+
     return (
         <div className="chart-page">
             {/* 첫 번째 차트의 타이틀을 Hero에 전달 (옵션) */}
             {charts.length > 0 && (
                 <Hero 
                     onSearchClick={() => {}} 
-                    title={charts[0]?.title} 
+                    title="OSS MUSIC CHARTS"
+                    cover1={cover1}
+                    cover2={cover2}
                 />
             )}
 

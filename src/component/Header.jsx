@@ -12,6 +12,7 @@ const Header = ({ user }) => {
     const handleChartClick = () => navigate('/charts'); // 차트 전용 페이지
     const handleSongListClick = () => navigate('/songs');
     const handlePlaylistClick = () => navigate('/playlist');
+    const handleDeveloperClick = () => navigate('/developers');
 
     const handleLogout = () => {
         signOut(auth).then(() => {
@@ -28,7 +29,7 @@ const Header = ({ user }) => {
 
                 <nav className="main-nav">
                     <button className={`main-nav-item ${location.pathname === '/' ? 'active' : ''}`} onClick={handleHomeClick}></button>
-                    <button className="main-nav-item" onClick={handleChartClick}>앱 제작자</button>
+                    <button className={`main-nav-item ${location.pathname === '/developers' ? 'active' : ''}`} onClick={handleDeveloperClick}>앱 제작자</button>
                     <button className={`main-nav-item ${location.pathname === '/songs' ? 'active' : ''}`} onClick={handleSongListClick}>노래 목록</button>
                     <button className={`main-nav-item ${location.pathname === '/charts' ? 'active' : ''}`} onClick={handleChartClick}>차트</button>
                     <button className={`main-nav-item ${location.pathname === '/playlist' ? 'active' : ''}`} onClick={handlePlaylistClick}>내 플레이 리스트</button>
