@@ -1,9 +1,18 @@
 import React from 'react';
 import '../MainPage.css';
 
-const TrackRow = ({ track, rank, showAlbumInfo = false, onAdd, onRemove, onClick }) => {
+const TrackRow = ({ track, rank, showAlbumInfo = false, onAdd, onRemove, onClick, selectable = false, selected = false, onSelect, memo }) => {
     return (
         <li className="main-track-row" onClick={onClick} style={{ cursor: 'pointer' }}>
+            {selectable && (
+                <div className="main-track-checkbox" onClick={(e) => e.stopPropagation()}>
+                    <input
+                        type="checkbox"
+                        checked={selected}
+                        onChange={() => onSelect(track.id)}
+                    />
+                </div>
+            )}
             <div className="main-track-rank">
                 {rank}
             </div>
@@ -27,6 +36,13 @@ const TrackRow = ({ track, rank, showAlbumInfo = false, onAdd, onRemove, onClick
                     </div>
                 )}
             </div>
+
+            {memo && (
+                <div className="main-track-memo">
+                    <span className="memo-label">Memo:</span>
+                    <span className="memo-text">{memo}</span>
+                </div>
+            )}
 
             <div className="main-track-actions">
                 {onAdd && (

@@ -79,13 +79,42 @@ function MainPage() {
     }
   };
 
+  const addMultipleToPlaylist = async (tracks) => {
+    if (!user) {
+      alert("로그인이 필요한 기능입니다. 로그인 페이지로 이동합니다.");
+      window.location.href = "/login";
+      return;
+    }
+
+    // Filter out already existing tracks
+    const newTracks = tracks.filter(t => !myPlaylist.some(p => p.id === t.id));
+
+    if (newTracks.length === 0) {
+      alert("이미 모든 곡이 플레이리스트에 있습니다.");
+      return;
+    }
+
+    const updatedPlaylist = [...myPlaylist, ...newTracks];
+    setMyPlaylist(updatedPlaylist);
+
+    const userDocRef = doc(db, "users", user.uid);
+    try {
+      await updateDoc(userDocRef, {
+        playlist: updatedPlaylist
+      });
+      alert(`${newTracks.length}곡이 플레이리스트에 추가되었습니다.`);
+    } catch (e) {
+      console.error("Error bulk adding to playlist:", e);
+      alert("저장에 실패했습니다.");
+    }
+  };
+
   const removeFromPlaylist = async (trackId) => {
     const trackToRemove = myPlaylist.find((t) => t.id === trackId);
     const newPlaylist = myPlaylist.filter((track) => track.id !== trackId);
     setMyPlaylist(newPlaylist);
 
     if (trackToRemove && user) {
-      // Remove from Firestore
       const userDocRef = doc(db, "users", user.uid);
       try {
         await updateDoc(userDocRef, {
@@ -93,6 +122,24 @@ function MainPage() {
         });
       } catch (e) {
         console.error("Error removing from playlist:", e);
+      }
+    }
+  };
+
+  const removeMultipleFromPlaylist = async (trackIds) => {
+    const tracksToRemove = myPlaylist.filter((t) => trackIds.includes(t.id));
+    const newPlaylist = myPlaylist.filter((t) => !trackIds.includes(t.id));
+    setMyPlaylist(newPlaylist);
+
+    if (user && tracksToRemove.length > 0) {
+      const userDocRef = doc(db, "users", user.uid);
+      try {
+        await updateDoc(userDocRef, {
+          playlist: newPlaylist // Just replace the whole list for simplicity in bulk
+        });
+        alert(`${tracksToRemove.length}곡이 삭제되었습니다.`);
+      } catch (e) {
+        console.error("Error bulk removing from playlist:", e);
       }
     }
   };
@@ -115,9 +162,6 @@ function MainPage() {
     // Save to Firestore
     const userDocRef = doc(db, "users", user.uid);
     try {
-      // Use dot notation to update specific map field or replace entire map?
-      // Easiest is to update the entire 'memos' field to avoid complex dot notation for dynamic keys in updateDoc if not using Map.
-      // Actually Firestore updateDoc allows "memos.trackId": text
       await updateDoc(userDocRef, {
         [`memos.${trackId}`]: text
       });
@@ -139,8 +183,16 @@ function MainPage() {
           <Route path="/" element={<HomePage onTrackClick={handleTrackClick} />} />
           <Route path="/charts" element={<ChartPage onTrackClick={handleTrackClick} />} />
           <Route path="/developers" element={<DeveloperPage />} />
-          <Route path="/songs" element={<SongList onAdd={addToPlaylist} onTrackClick={handleTrackClick} />} />
-          <Route path="/playlist" element={<MyPlaylistPage playlist={myPlaylist} onRemove={removeFromPlaylist} user={user} onTrackClick={handleTrackClick} />} />
+          <Route path="/songs" element={<SongList onAdd={addToPlaylist} onAddMultiple={addMultipleToPlaylist} onTrackClick={handleTrackClick} />} />
+          <Route path="/playlist" element={<MyPlaylistPage
+            playlist={myPlaylist}
+            memos={memos}
+            onRemove={removeFromPlaylist}
+            onRemoveMultiple={removeMultipleFromPlaylist}
+            user={user}
+            onTrackClick={handleTrackClick}
+          />}
+          />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/developers" element={<DeveloperPage />} />
         </Routes>
@@ -156,13 +208,13 @@ function MainPage() {
           onSaveMemo={handleSaveMemo}
 
           isSaved={myPlaylist.some(t => t.id === selectedTrack.id)}
-          
+
           onTogglePlaylist={() => {
             const exists = myPlaylist.some(t => t.id === selectedTrack.id);
             if (exists) {
-                removeFromPlaylist(selectedTrack.id); // 이미 있으면 삭제
+              removeFromPlaylist(selectedTrack.id); // 이미 있으면 삭제
             } else {
-                addToPlaylist(selectedTrack); // 없으면 추가
+              addToPlaylist(selectedTrack); // 없으면 추가
             }
           }}
         />

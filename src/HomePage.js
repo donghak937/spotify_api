@@ -21,7 +21,7 @@ function HomePage({ onTrackClick }) {
                 // 중복 아티스트 제거하고 6명만 뽑기
                 const uniqueArtists = [];
                 const seen = new Set();
-                
+
                 chart.tracks.forEach(track => {
                     if (!seen.has(track.artist)) {
                         seen.add(track.artist);
@@ -31,7 +31,7 @@ function HomePage({ onTrackClick }) {
                         });
                     }
                 });
-                
+
                 // 최대 9명까지만 설정
                 setHotArtists(uniqueArtists.slice(0, 9));
             }
@@ -46,7 +46,7 @@ function HomePage({ onTrackClick }) {
     return (
         <div className="home-page">
             {/* 1. 상단 Hero 섹션 */}
-            <Hero 
+            <Hero
                 onSearchClick={() => navigate('/songs')}
                 title="WELCOME TO OSS MUSIC!"
                 cover1={cover1}
@@ -55,17 +55,17 @@ function HomePage({ onTrackClick }) {
 
             {/* 2. 메인 컨텐츠 영역 (좌우 분할) */}
             <div style={{ padding: '0 40px 60px 40px', maxWidth: '1200px', margin: '0 auto' }}>
-                
+
                 {topChart ? (
                     <div className="home-layout">
-                        
+
                         {/* [왼쪽] 차트 리스트 */}
                         <section className="home-chart-section">
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                                 <h2 className="main-section-title" style={{ marginBottom: 0 }}>
                                     🔥 인기 급상승
                                 </h2>
-                                <button 
+                                <button
                                     onClick={() => navigate('/charts')}
                                     style={{ background: 'none', color: '#b3b3b3', fontSize: '13px', fontWeight: 'bold' }}
                                 >
@@ -88,13 +88,18 @@ function HomePage({ onTrackClick }) {
 
                         {/* [오른쪽] 사이드바 (아티스트 & 태그) */}
                         <aside className="home-side-section">
-                            
-                            {/* 추천 아티스트 */}
+
+                            {/* 추천 아티스트 (클릭하면 해당 아티스트로 검색) */}
                             <div>
                                 <h3 className="main-section-title" style={{ fontSize: '20px' }}>🎤 Trend Artists</h3>
                                 <div className="artist-grid">
                                     {hotArtists.map((artist, idx) => (
-                                        <div key={idx} className="artist-item">
+                                        <div
+                                            key={idx}
+                                            className="artist-item"
+                                            onClick={() => navigate(`/songs?search=${encodeURIComponent(artist.name)}`)}
+                                            style={{ cursor: 'pointer' }}
+                                        >
                                             <img src={artist.image} alt={artist.name} className="artist-img" />
                                             <span className="artist-name">{artist.name}</span>
                                         </div>
@@ -102,16 +107,20 @@ function HomePage({ onTrackClick }) {
                                 </div>
                             </div>
 
-                            {/* 추천 태그 (장식용 기능) */}
+                            {/* 추천 태그 (클릭하면 해당 키워드로 검색) */}
                             <div>
                                 <h3 className="main-section-title" style={{ fontSize: '20px' }}>🏷️ Hot Keywords</h3>
                                 <div className="keyword-tags">
-                                    <span className="keyword-tag">#뉴진스</span>
-                                    <span className="keyword-tag">#드라이브</span>
-                                    <span className="keyword-tag">#운동할때</span>
-                                    <span className="keyword-tag">#K-POP</span>
-                                    <span className="keyword-tag">#노동요</span>
-                                    <span className="keyword-tag">#새벽감성</span>
+                                    {['뉴진스', '드라이브', '운동할때', 'K-POP', '노동요', '새벽감성'].map((keyword) => (
+                                        <span
+                                            key={keyword}
+                                            className="keyword-tag"
+                                            onClick={() => navigate(`/songs?search=${encodeURIComponent(keyword)}`)}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            #{keyword}
+                                        </span>
+                                    ))}
                                 </div>
                             </div>
 
