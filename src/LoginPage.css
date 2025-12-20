@@ -1,27 +1,69 @@
+/**
+ * @file LoginPage.css
+ * @description 로그인 페이지 전용 스타일
+ * 
+ * 로그인 페이지의 레이아웃과 스타일을 정의합니다.
+ * - 전체 화면 중앙 정렬
+ * - 앱 로고 스타일
+ * - Google 로그인 버튼 스타일
+ */
+
+/**
+ * 로그인 페이지 컨테이너
+ * 
+ * CSS Grid의 place-items로 수직/수평 중앙 정렬
+ * 전체 화면 높이(100vh)를 차지
+ */
 .login {
     display: grid;
     place-items: center;
+    /* 수직/수평 중앙 정렬 */
     height: 100vh;
+    /* 전체 화면 높이 */
     background-color: black;
+    /* 검은 배경 */
 }
 
+/**
+ * 앱 로고 스타일 (OSS MUSIC)
+ * 
+ * 크고 굵은 흰색 텍스트로 앱 브랜딩 표현
+ */
 .login-logo {
     font-size: 80px;
+    /* 매우 큰 폰트 크기 */
     font-weight: 900;
+    /* 가장 굵은 폰트 */
     color: white;
     margin-bottom: 40px;
+    /* 버튼과의 간격 */
     letter-spacing: -2px;
+    /* 글자 간격을 좁게 (응집력) */
 }
 
+/**
+ * Google 로그인 버튼 스타일
+ * 
+ * Spotify 그린 컬러의 둥근 버튼
+ * 호버 시 커서가 포인터로 변경됨
+ */
 .login-btn {
     padding: 20px;
+    /* 넉넉한 내부 여백 */
     background-color: #1db954;
+    /* Spotify 그린 */
     border-radius: 99px;
+    /* 완전히 둥근 모서리 */
     font-weight: 800;
+    /* 굵은 폰트 */
     color: white;
     text-decoration: none;
+    /* 밑줄 제거 */
     text-transform: uppercase;
+    /* 대문자로 변환 */
     border: none;
+    /* 테두리 제거 */
     cursor: pointer;
+    /* 클릭 가능 표시 */
     font-size: 16px;
 }
